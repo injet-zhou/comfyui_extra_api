@@ -16,10 +16,13 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
-name = "ComfyUI-extra-API" # Unique identifier for your node. Immutable after creation.
+name = "comfyui_extra_api" # Unique identifier for your node. Immutable after creation.
 description = "Add more endpoints to make easy for utilizing ComfyUI API"
 version = "1.0.0" # Custom Node version. Must be semantically versioned.
 dependencies  = ['diskcache'] # Filled in from requirements.txt
+
+[project.urls]
+Repository = "https://github.com/injet-zhou/comfyui_extra_api"
 
 [tool.comfy]
 PublisherId = "injet"
