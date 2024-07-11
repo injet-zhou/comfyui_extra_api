@@ -4,6 +4,11 @@ from server import PromptServer
 import folder_paths
 
 from .model_utils.refresh import refresh_folder
+from .model_utils.lora import (
+    list_available_networks,
+    available_networks,
+    create_lora_json,
+)
 
 routes = PromptServer.instance.routes
 
@@ -24,8 +29,7 @@ async def get_checkpoints(request: Request):
             {
                 "name": os.path.basename(ckpt),
                 "path": ckpt,
-                "full_path": folder_paths.get_full_path("checkpoints", ckpt)
-                or ckpt,
+                "full_path": folder_paths.get_full_path("checkpoints", ckpt) or ckpt,
             }
             for ckpt in checkpoints
         ]
@@ -40,6 +44,26 @@ async def refresh_checkpoints(request: Request):
     try:
         data = refresh_folder("checkpoints")
         return success_resp(data=data)
+    except Exception as e:
+        return error_resp(500, str(e))
+
+
+@routes.get("/comfyapi/v1/loras")
+async def get_loras(request: Request):
+    try:
+        loras = loras = [
+            create_lora_json(obj=obj) for obj in available_networks.values()
+        ]
+        return success_resp(loras=loras)
+    except Exception as e:
+        return error_resp(500, str(e))
+
+
+@routes.post("/comfyapi/v1/refresh-loras")
+async def refresh_loras(request: Request):
+    try:
+        list_available_networks()
+        return success_resp()
     except Exception as e:
         return error_resp(500, str(e))
 

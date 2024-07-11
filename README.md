@@ -35,3 +35,15 @@ start using the extra API functions in your ComfyUI project.
     Method: Post
 
     Description: Refresh the list of checkpoints and return the updated list.
+
+3. `/comfyapi/v1/loras`
+   
+   Method: Get
+
+   Description: Get all the LoRa.
+   
+4. `/comfyapi/v1/refresh-loras`
+   
+    Method: Post
+
+    Description: Refresh the list of LoRa and return the updated list.
