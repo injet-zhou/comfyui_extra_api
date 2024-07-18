@@ -11,39 +11,56 @@ This is a collection of extra API functions that are not included in the default
    ```bash
     git clone https://github.com/injet-zhou/comfyui_extra_api.git
     cd comfyui_extra_api
-    ```
+   ```
 3. install the dependencies
    
    use poetry(Recommended)
    ```bash
     poetry install
-    ```
+   ```
     or use pip
    ```bash
     pip install -r requirements.txt
-    ```
-start using the extra API functions in your ComfyUI project.
+   ```
+   start using the extra API functions in your ComfyUI project.
 
 ## Endpoints
 1. `/comfyapi/v1/checkpoints`
-   
+
    Method: Get
-   
+
    Description: Get all the checkpoints.
+
 2. `/comfyapi/v1/refresh-checkpoints`
-   
+
     Method: Post
 
     Description: Refresh the list of checkpoints and return the updated list.
 
 3. `/comfyapi/v1/loras`
-   
+
    Method: Get
 
    Description: Get all the LoRa.
-   
+
 4. `/comfyapi/v1/refresh-loras`
-   
+
     Method: Post
 
     Description: Refresh the list of LoRa and return the updated list.
+
+5. `/comfyapi/v1/output-images`
+
+    Method: Get
+
+    Query: `temp`  true or false
+
+    Description: List all the output images, if `temp` is true, only list the temporary output images which are generated in `PreviewImage` node.
+
+6. `comfyapi/v1/output-images/{filename}`
+
+    Method: Delete
+
+    Query: `temp`  true or false
+
+    Description: Delete the output image with the given filename, if `temp` is true, only delete the temporary output image which is generated in `PreviewImage` node.
