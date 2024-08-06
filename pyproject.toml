@@ -3,7 +3,7 @@ name = "ComfyUI-extra-API"
 version = "0.1.0"
 description = "Add more endpoints to make easy for utilizing ComfyUI API"
 authors = ["injet-zhou <zhouyingjie@sinkcode.cn>"]
-license = "MIT"
+license = { text = "MIT License" }
 readme = "README.md"
 
 [tool.poetry.dependencies]
