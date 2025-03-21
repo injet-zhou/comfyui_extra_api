@@ -105,14 +105,29 @@ async def delete_output_images(request: Request):
             return error_resp(400, "invalid filename")
 
         is_temp = request.rel_url.query.get("temp", "false") == "true"
-        annotated_file = f"{filename} [{'temp' if is_temp else 'output'}]"
-        if not folder_paths.exists_annotated_filepath(annotated_file):
-            return error_resp(404, f"file {filename} not found")
 
-        filepath = folder_paths.get_annotated_filepath(annotated_file)
-        os.remove(filepath)
+        # Subfolder
+        subfolder = request.rel_url.query.get("subfolder", "")
+
+        # Base directory
+        base_dir = folder_paths.get_temp_directory() if is_temp else folder_paths.get_output_directory()
+        print(f"Base output directory: {base_dir}")
+
+        # Full file path with subfolder, if any
+        if subfolder:
+            file_path = os.path.join(base_dir, subfolder, filename)
+        else:
+            file_path = os.path.join(base_dir, filename)
+        print(f"Attempting to delete a file at: {file_path}")
+
+        if not os.path.exists(file_path):
+            return error_resp(404, f"File {filename} not found at {file_path}")
+
+        os.remove(file_path)
+        print(f"Successfully deleted file: {file_path}")
         return success_resp()
     except Exception as e:
+        print(f"Error during deletion: {str(e)}")
         return error_resp(500, str(e))
 
 @routes.delete("/comfyapi/v1/input-images/{filename}")
@@ -121,15 +136,12 @@ async def delete_input_images(request: Request):
         filename = request.match_info.get("filename")
         if filename is None:
             return error_resp(400, "filename is required")
-        
         if filename[0] == '/' or '..' in filename:
             return error_resp(400, "invalid filename")
-        
         is_temp = request.rel_url.query.get("temp", "false") == "true"
         annotated_file = f"{filename} [{'temp' if is_temp else 'input'}]"
         if not folder_paths.exists_annotated_filepath(annotated_file):
             return error_resp(404, f"file {filename} not found")
-        
         filepath = folder_paths.get_annotated_filepath(annotated_file)
         os.remove(filepath)
         return success_resp()
