@@ -83,11 +83,10 @@ async def get_output_images(request: Request):
             else folder_paths.get_output_directory()
         )
         # iterate through the folder and get the list of images
-        file_types = [".png", ".jpg", ".jpeg", ".webp", ".gif"]
         images = []
         for root, dirs, files in os.walk(folder):
             for file in files:
-                if any(file.endswith(ext) for ext in file_types):
+                if file.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif")):
                     image = {"name": file, "full_path": os.path.join(root, file)}
                     images.append(image)
         return success_resp(images=images)
